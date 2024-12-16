@@ -1,5 +1,7 @@
 import React from "react";
 import SectionContainer from "./SectionContainer";
+import Image from "next/image"; // Import Image from next/image
+import Link from "next/link"; // Import Link for navigation
 
 const HeroSection = () => {
   return (
@@ -14,32 +16,41 @@ const HeroSection = () => {
           <p className="text-lg">
             Shop the Latest Fashion Items and Stay ahead of the style game
           </p>
-          <button className="bg-black text-white w-32 h-12 shadow-lg hover:shadow-2xl mt-28 active:font-bold">
-            See more
-          </button>
+          {/* You may wrap the button with Link if it needs to navigate */}
+          <Link href="/some-path">
+            <button className="bg-black text-white w-32 h-12 shadow-lg hover:shadow-2xl mt-28 active:font-bold">
+              See more
+            </button>
+          </Link>
         </div>
 
         {/* Column 2: Image Grid */}
         <div className="col-span-3 md:col-span-3 grid grid-cols-2 gap-5 my-10 md:my-0">
           <div className="flex justify-center">
-            <img
+            <Image
               className="w-full h-full object-cover shadow-xl rounded-[3.5rem] hover:shadow-2xl transition-shadow duration-900 ease-in-out"
               src="/assets/HeroSectionAssets/HeroAsset1.png"
               alt="Furniture Trend 1"
+              width={500} // Provide appropriate width
+              height={500} // Provide appropriate height
             />
           </div>
           <div className="flex justify-center">
-            <img
+            <Image
               className="w-full h-full object-cover shadow-xl rounded-[3.5rem] hover:shadow-2xl transition-shadow duration-900 ease-in-out"
               src="/assets/HeroSectionAssets/HeroAsset2.png"
               alt="Furniture Trend 2"
+              width={500}
+              height={500}
             />
           </div>
           <div className="col-span-2 flex justify-center">
-            <img
+            <Image
               className="w-full h-full object-cover shadow-xl rounded-[3.5rem] hover:shadow-2xl transition-shadow duration-900 ease-in-out"
               src="/assets/HeroSectionAssets/HeroAsset3.png"
               alt="Furniture Trend 3"
+              width={500}
+              height={500}
             />
           </div>
         </div>

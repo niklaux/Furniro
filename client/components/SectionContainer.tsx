@@ -1,6 +1,10 @@
 import React from "react";
 
-const SectionContainer = ({ children }: any) => {
+interface SectionContainerProps {
+  children: React.ReactNode;  // Specify that children can be any valid React node
+}
+
+const SectionContainer: React.FC<SectionContainerProps> = ({ children }) => {
   return <div className="max-w-screen-xl mx-auto p-4">{children}</div>;
 };
 
