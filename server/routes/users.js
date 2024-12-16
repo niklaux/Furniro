@@ -3,7 +3,6 @@ const express = require("express");
 const db = require("../db");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const { emit } = require("nodemon");
 
 // Get All Users
 router.get("/users", async (req, res) => {
