@@ -28,7 +28,7 @@ const HeroSection = () => {
         <div className="col-span-3 md:col-span-3 grid grid-cols-2 gap-5 my-10 md:my-0">
           <div className="flex justify-center">
             <Image
-              className="w-full h-full object-cover shadow-xl rounded-[3.5rem] hover:shadow-2xl transition-shadow duration-900 ease-in-out"
+              className="w-full h-[15rem] object-cover shadow-xl rounded-[2rem] hover:shadow-2xl transition-shadow duration-900 ease-in-out"
               src="/assets/HeroSectionAssets/HeroAsset1.png"
               alt="Furniture Trend 1"
               width={500} // Provide appropriate width
@@ -37,7 +37,7 @@ const HeroSection = () => {
           </div>
           <div className="flex justify-center">
             <Image
-              className="w-full h-full object-cover shadow-xl rounded-[3.5rem] hover:shadow-2xl transition-shadow duration-900 ease-in-out"
+              className="w-full h-[15rem] object-cover shadow-xl rounded-[2rem] hover:shadow-2xl transition-shadow duration-900 ease-in-out"
               src="/assets/HeroSectionAssets/HeroAsset2.png"
               alt="Furniture Trend 2"
               width={500}
@@ -46,7 +46,7 @@ const HeroSection = () => {
           </div>
           <div className="col-span-2 flex justify-center">
             <Image
-              className="w-full h-full object-cover shadow-xl rounded-[3.5rem] hover:shadow-2xl transition-shadow duration-900 ease-in-out"
+              className="w-full h-[15rem] object-cover shadow-xl rounded-[2rem] hover:shadow-2xl transition-shadow duration-900 ease-in-out"
               src="/assets/HeroSectionAssets/HeroAsset3.png"
               alt="Furniture Trend 3"
               width={500}
