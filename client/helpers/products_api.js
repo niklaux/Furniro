@@ -1,6 +1,10 @@
 import axios from "axios";
+import dotenv from "dotenv";
 
-const API_URL = "http://localhost:8000/api";
+// Load environment variables from .env file
+dotenv.config();
+
+const API_URL = process.env.NEXT_PUBLIC_EXPRESS_URL;
 
 // Function to fetch all products
 export const fetchProducts = async () => {
