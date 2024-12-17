@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 // Define the type for props
@@ -14,7 +15,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   name,
   price,
   image_url,
-  category,
+  // category,
 }) => {
   return (
     <div
@@ -22,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       key={product_id}
     >
       <div className="h-[10rem] mb-5">
-        <img
+        <Image
           className="cursor-pointer w-full h-full object-cover shadow-md rounded-[1rem]"
           src={image_url}
           alt={name}
