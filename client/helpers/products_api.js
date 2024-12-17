@@ -21,3 +21,13 @@ export const postProduct = async (productData) => {
     throw new Error("Failed to create product");
   }
 };
+
+// Function to fetch all categories
+export const fetchCategories = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/list-categories`);
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch categories");
+  }
+};
