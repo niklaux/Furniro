@@ -1,3 +1,4 @@
+"use client"
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { fetchProducts, fetchCategories } from "../helpers/products_api"; // Ensure fetchCategories is imported
@@ -102,7 +103,7 @@ const HeroCollection = () => {
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-16 my-10">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-10 md:gap-16 my-10">
         {filteredProducts?.map((product) => {
           const categoryName = categoryMap?.[product.category_id] || "Unknown";
           return (
