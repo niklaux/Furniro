@@ -1,5 +1,8 @@
 "use client";
 import React, { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { loginUser, registerUser } from "../helpers/users_api";
+import { useRouter } from "next/navigation";
 
 const AuthForm: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login and sign up
@@ -11,6 +14,9 @@ const AuthForm: React.FC = () => {
     phone_number: "",
   });
 
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -19,24 +25,50 @@ const AuthForm: React.FC = () => {
     }));
   };
 
+  // Mutation for Login
+  const loginMutation = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.token); // Store JWT Token
+      alert("Login successful!");
+      queryClient.invalidateQueries({ queryKey: ["currentUser"] }); // Correct form
+      router.push("/"); // Navigate to Dashboard or Home
+    },
+    onError: (error: any) => {
+      alert(error.message);
+    },
+  });
+
+  // Mutation for Sign Up
+  const signUpMutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: () => {
+      alert("Account successfully created. Please log in.");
+      setIsLogin(true);
+    },
+    onError: (error: any) => {
+      alert(error.message);
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isLogin) {
       // Submit login payload
-      console.log("Login Payload:", {
+      loginMutation.mutate({
         email: formData.email,
         password: formData.password,
       });
     } else {
       // Submit sign up payload
-      console.log("Sign Up Payload:", formData);
+      signUpMutation.mutate(formData);
     }
   };
 
   return (
-    <div className="flex items-center justify-center my-5 p-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+    <div className="flex items-center justify-center my-14 p-4">
+      <div className="w-full max-w-md bg-white p-8 rounded-[2rem] shadow-lg">
         <h1 className="text-2xl font-bold mb-6 text-center">
           {isLogin ? "Login" : "Sign Up"}
         </h1>
@@ -108,8 +140,15 @@ const AuthForm: React.FC = () => {
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg font-bold hover:bg-blue-600 transition duration-300"
+            disabled={loginMutation.isPending || signUpMutation.isPending}
           >
-            {isLogin ? "Login" : "Sign Up"}
+            {isLogin
+              ? loginMutation.isPending
+                ? "Logging in..."
+                : "Login"
+              : signUpMutation.isPending
+              ? "Signing up..."
+              : "Sign Up"}
           </button>
         </form>
         <p className="text-center mt-4">

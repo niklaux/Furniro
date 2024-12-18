@@ -1,9 +1,10 @@
 "use client"
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchProducts, fetchCategories } from "../helpers/products_api"; // Ensure fetchCategories is imported
 import SectionContainer from "./SectionContainer";
 import ProductCard from "./ProductCard";
+import useToken from "@/hooks/useToken";
 
 type Product = {
   product_id: number;
@@ -22,6 +23,12 @@ type Category = {
 
 const HeroCollection = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // State to store selected category
+
+  const tokenDetails = useToken();
+
+  useEffect(() => {
+    console.log("Token Details:", tokenDetails);
+  }, [tokenDetails]);
 
   // Fetch Products
   const {
@@ -113,7 +120,7 @@ const HeroCollection = () => {
               name={product.name}
               price={product.price}
               image_url={product.image_url}
-              category={categoryName} // Passing category name to ProductCard
+              // category={categoryName} // Passing category name to ProductCard
             />
           );
         })}

@@ -45,7 +45,71 @@ router.get("/list-categories", async (req, res) => {
     const result = await db.query("SELECT * FROM categories");
     res.status(200).json(result.rows);
   } catch (error) {
-    res.status(500).json({error: "Failed to catch categories", details: error.message})
+    res
+      .status(500)
+      .json({ error: "Failed to catch categories", details: error.message });
+  }
+});
+
+// Add item to cart
+router.post("/cart", async (req, res) => {
+  const { user_id, product_id, quantity } = req.body;
+
+  if (!user_id || !product_id || !quantity) {
+    return res
+      .status(400)
+      .json({ error: "User, product, and quantity are required" });
+  }
+
+  try {
+    const existingItem = await db.query(
+      "SELECT * FROM cart WHERE user_id = $1 AND product_id = $2",
+      [user_id, product_id]
+    );
+
+    if (existingItem.rows.length > 0) {
+      await db.query(
+        "UPDATE cart SET quantity = quantity + $1 WHERE user_id = $2 AND product_id = $3",
+        [quantity, user_id, product_id]
+      );
+    } else {
+      await db.query(
+        "INSERT INTO cart (user_id, product_id, quantity) VALUES ($1, $2, $3)",
+        [user_id, product_id, quantity]
+      );
+    }
+
+    res.status(200).json({ msg: "Item added to cart" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to add item to cart", details: error.message });
+  }
+});
+
+// Fetch items in the cart for a user
+router.get("/cart/:user_id", async (req, res) => {
+  const { user_id } = req.params;
+
+  if (!user_id) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
+  try {
+    const result = await db.query(
+      "SELECT cart.product_id, cart.quantity, products.name, products.price, products.image_url FROM cart JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = $1",
+      [user_id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ msg: "No items found in cart" });
+    }
+
+    res.status(200).json(result.rows);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch cart items", details: error.message });
   }
 });
 

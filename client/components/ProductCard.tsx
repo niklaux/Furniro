@@ -1,12 +1,20 @@
 import React from "react";
+import { useMutation } from "@tanstack/react-query";
+import useToken from "@/hooks/useToken";
+import { addToCart } from "@/helpers/products_api";
 
-// Define the type for props
 type ProductCardProps = {
   product_id: number;
   name: string;
   price: string;
   image_url: string;
-  category?: string; // Optional category name prop
+};
+
+// Define the type for the cart data
+type CartData = {
+  user_id: number;
+  product_id: number;
+  quantity: number;
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -14,13 +22,36 @@ const ProductCard: React.FC<ProductCardProps> = ({
   name,
   price,
   image_url,
-  // category,
 }) => {
+  const tokenDetails = useToken();
+
+  // Use the mutation with a defined mutationFn
+  const mutation = useMutation({
+    mutationFn: addToCart,
+    onSuccess: () => {
+      alert("Item successfully added to cart!");
+    },
+    onError: (error: any) => {
+      alert("Failed to add item to cart. Please try again.");
+    },
+  });
+
+  const handleAddToCart = () => {
+    if (!tokenDetails?.id) {
+      alert("Please log in to add items to your cart.");
+      return;
+    }
+
+    // Call the mutation function with the correct payload
+    mutation.mutate({
+      user_id: tokenDetails.id, // User ID from token
+      product_id,
+      quantity: 1, // Default quantity
+    });
+  };
+
   return (
-    <div
-      className="transition-transform duration-300 hover:scale-105"
-      key={product_id}
-    >
+    <div key={product_id}>
       <div className="h-[10rem] mb-5">
         <img
           className="cursor-pointer w-full h-full object-cover shadow-md rounded-[1rem]"
@@ -31,7 +62,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <p className="text-[#78798E] font-bold">{name}</p>
       <div className="flex justify-between items-center">
         <p className="font-bold">₱ {price}</p>
-        <button className="border bg-[#D4DCFB] p-2 rounded-[2rem] font-bold">
+        <button
+          onClick={handleAddToCart}
+          className="border bg-[#D4DCFB] p-2 rounded-[2rem] font-bold transition-transform duration-200 hover:scale-105 active:font-extrabold"
+        >
           Add to Cart
         </button>
       </div>

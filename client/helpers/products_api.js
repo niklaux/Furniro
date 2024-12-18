@@ -35,3 +35,23 @@ export const fetchCategories = async () => {
     throw new Error("Failed to fetch categories");
   }
 };
+
+// Function to add an item to the cart
+export const addToCart = async (cartData) => {
+  try {
+    const response = await axios.post(`${API_URL}/cart`, cartData);
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to add item to cart");
+  }
+};
+
+// Function to get items in user's cart
+export const fetchCart = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}/cart/${userId}`); // API endpoint that requires user_id
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch cart data");
+  }
+};

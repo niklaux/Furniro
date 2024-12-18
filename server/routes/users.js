@@ -3,6 +3,7 @@ const express = require("express");
 const db = require("../db");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // Get All Users
 router.get("/users", async (req, res) => {
@@ -18,7 +19,7 @@ router.get("/users", async (req, res) => {
 router.post("/users", async (req, res) => {
   const { name, email, password, address, phone_number, user_type } = req.body;
 
-  if (!name || !email || !password || !address || !phone_number || !user_type) {
+  if (!name || !email || !password || !address || !phone_number) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -73,10 +74,25 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Invalid Password" });
     }
 
-    
+    const secretKey = process.env.SECRET_KEY;
+    if (!secretKey) {
+      return res.status(500).json({ error: "Secret key is not configured." });
+    }
+
+    // Generate JWT Token
+    const token = jwt.sign({ id: user.user_id, email: user.email }, secretKey, {
+      expiresIn: "1h",
+    });
+
+    // Send success response
+    return res.status(200).json({
+      message: "Login successful",
+      token: token,
+      user: { id: user.id, email: user.email },
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).send(error.message);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
