@@ -8,7 +8,7 @@ const Page = () => {
     <div className="mx-auto">
       <Navbar />
       <MyCart />
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

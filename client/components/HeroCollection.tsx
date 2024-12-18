@@ -58,12 +58,6 @@ const HeroCollection = () => {
     return <SectionContainer>Failed to load data.</SectionContainer>;
   }
 
-  // Map category IDs to their names for quick lookup
-  const categoryMap = categories?.reduce((acc, category) => {
-    acc[category.category_id] = category.name;
-    return acc;
-  }, {} as Record<number, string>);
-
   // Filter products based on the selected category
   const filteredProducts = selectedCategory
     ? products?.filter((product) => product.category_id === selectedCategory)
@@ -112,7 +106,7 @@ const HeroCollection = () => {
       {/* Product Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-10 md:gap-16 my-10">
         {filteredProducts?.map((product) => {
-          const categoryName = categoryMap?.[product.category_id] || "Unknown";
+          // const categoryName = categoryMap?.[product.category_id] || "Unknown";
           return (
             <ProductCard
               key={product.product_id}

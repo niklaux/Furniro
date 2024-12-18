@@ -11,11 +11,11 @@ type ProductCardProps = {
 };
 
 // Define the type for the cart data
-type CartData = {
-  user_id: number;
-  product_id: number;
-  quantity: number;
-};
+// type CartData = {
+//   user_id: number;
+//   product_id: number;
+//   quantity: number;
+// };
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product_id,
@@ -31,8 +31,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
     onSuccess: () => {
       alert("Item successfully added to cart!");
     },
-    onError: (error: any) => {
-      alert("Failed to add item to cart. Please try again.");
+    onError: (error: object) => {
+      alert("Failed to add item to cart. Please try again." + error);
     },
   });
 

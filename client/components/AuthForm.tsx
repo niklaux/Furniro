@@ -34,7 +34,7 @@ const AuthForm: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] }); // Correct form
       router.push("/"); // Navigate to Dashboard or Home
     },
-    onError: (error: any) => {
+    onError: (error) => {
       alert(error.message);
     },
   });
@@ -46,8 +46,8 @@ const AuthForm: React.FC = () => {
       alert("Account successfully created. Please log in.");
       setIsLogin(true);
     },
-    onError: (error: any) => {
-      alert(error.message);
+    onError: (error: object) => {
+      alert(error);
     },
   });
 
