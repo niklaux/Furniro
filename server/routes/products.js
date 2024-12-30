@@ -97,7 +97,7 @@ router.get("/cart/:user_id", async (req, res) => {
 
   try {
     const result = await db.query(
-      "SELECT cart.product_id, cart.quantity, products.name, products.price, products.image_url FROM cart JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = $1",
+      "SELECT * FROM cart JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = $1",
       [user_id]
     );
 
@@ -110,6 +110,52 @@ router.get("/cart/:user_id", async (req, res) => {
     res
       .status(500)
       .json({ error: "Failed to fetch cart items", details: error.message });
+  }
+});
+
+// Update quantity of an item in the cart
+router.put("/cart", async (req, res) => {
+  const { user_id, product_id, quantity } = req.body;
+
+  if (!user_id || !product_id || !quantity) {
+    return res
+      .status(400)
+      .json({ error: "User ID, product ID, and quantity are required" });
+  }
+
+  try {
+    await db.query(
+      "UPDATE cart SET quantity = $1 WHERE user_id = $2 AND product_id = $3",
+      [quantity, user_id, product_id]
+    );
+    res.status(200).json({ msg: "Cart item quantity updated successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to update cart item", details: error.message });
+  }
+});
+
+// Delete an item from the cart
+router.delete("/cart", async (req, res) => {
+  const { user_id, product_id } = req.body;
+
+  if (!user_id || !product_id) {
+    return res
+      .status(400)
+      .json({ error: "User ID and product ID are required" });
+  }
+
+  try {
+    await db.query("DELETE FROM cart WHERE user_id = $1 AND product_id = $2", [
+      user_id,
+      product_id,
+    ]);
+    res.status(200).json({ msg: "Cart item deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to delete cart item", details: error.message });
   }
 });
 

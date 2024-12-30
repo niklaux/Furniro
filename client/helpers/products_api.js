@@ -55,3 +55,23 @@ export const fetchCart = async (userId) => {
     throw new Error("Failed to fetch cart data");
   }
 };
+
+// Function to update the quantity of a cart item
+export const updateCartItemQuantity = async (cartData) => {
+  try {
+    const response = await axios.put(`${API_URL}/cart`, cartData);
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to update cart item quantity");
+  }
+};
+
+// Function to delete an item from the cart
+export const deleteCartItem = async (cartData) => {
+  try {
+    const response = await axios.delete(`${API_URL}/cart`, { data: cartData });
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to delete cart item");
+  }
+};

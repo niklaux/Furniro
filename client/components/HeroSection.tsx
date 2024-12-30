@@ -17,7 +17,7 @@ const HeroSection = () => {
             Shop the Latest Fashion Items and Stay ahead of the style game
           </p>
           {/* You may wrap the button with Link if it needs to navigate */}
-          <Link href="/some-path">
+          <Link href="/products">
             <button className="bg-black text-white w-32 h-12 shadow-lg hover:shadow-2xl mt-28 active:font-bold">
               See more
             </button>

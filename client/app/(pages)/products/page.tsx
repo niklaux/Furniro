@@ -1,15 +1,16 @@
-"use client";
 import Footer from "@/components/Footer";
-import HeroSection from "@/components/HeroSection";
+import HeroCollection from "@/components/HeroCollection";
 import Navbar from "@/components/Navbar";
+import React from "react";
 
-export default function Home() {
-  
+const Page = () => {
   return (
     <div className="mx-auto">
       <Navbar />
-      <HeroSection />
+      <HeroCollection />
       <Footer />
     </div>
   );
-}
+};
+
+export default Page;
