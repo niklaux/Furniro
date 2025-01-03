@@ -5,6 +5,7 @@ import {
   fetchCart,
   updateCartItemQuantity,
   deleteCartItem,
+  checkoutCart, // Import the checkout function
 } from "@/helpers/products_api";
 import useToken from "@/hooks/useToken";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -26,6 +27,7 @@ type MutationError = {
 const MyCart = () => {
   const tokenDetails = useToken();
   const queryClient = useQueryClient();
+  const [checkoutStatus, setCheckoutStatus] = React.useState<string | null>(null);
 
   const {
     data: cartItems,
@@ -61,6 +63,19 @@ const MyCart = () => {
     },
   });
 
+  const checkoutMutation = useMutation({
+    mutationFn: checkoutCart,
+    onSuccess: () => {
+      setCheckoutStatus("Checkout successful!");
+      queryClient.invalidateQueries({
+        queryKey: ["cart", tokenDetails?.id],
+      });
+    },
+    onError: (error: MutationError) => {
+      setCheckoutStatus(`Checkout failed: ${error.message}`);
+    },
+  });
+
   const handleUpdateQuantity = (productId: number, newQuantity: number) => {
     if (!tokenDetails?.id) {
       alert("User is not logged in.");
@@ -91,6 +106,15 @@ const MyCart = () => {
     });
   };
 
+  const handleCheckout = () => {
+    if (!tokenDetails?.id) {
+      alert("User is not logged in.");
+      return;
+    }
+
+    checkoutMutation.mutate(tokenDetails.id); // Trigger the checkout with the user's ID
+  };
+
   if (!tokenDetails?.id) {
     return (
       <SectionContainer>Please log in to view your cart.</SectionContainer>
@@ -100,7 +124,7 @@ const MyCart = () => {
   if (isLoading)
     return <SectionContainer>Loading your cart...</SectionContainer>;
   if (isError)
-    return <SectionContainer>Failed to load cart items.</SectionContainer>;
+    return <SectionContainer>There are no items in your cart.</SectionContainer>;
 
   return (
     <SectionContainer>
@@ -190,6 +214,20 @@ const MyCart = () => {
         ) : (
           <p>No items in your cart.</p>
         )}
+      </div>
+
+      <div className="mt-10">
+        {checkoutStatus && (
+          <p className={`text-center font-semibold ${checkoutStatus.includes('failed') ? 'text-red-500' : 'text-green-500'}`}>
+            {checkoutStatus}
+          </p>
+        )}
+        <button
+          onClick={handleCheckout}
+          className="px-4 py-2 bg-blue-600 text-white rounded-full w-full sm:w-auto"
+        >
+          Checkout
+        </button>
       </div>
     </SectionContainer>
   );
