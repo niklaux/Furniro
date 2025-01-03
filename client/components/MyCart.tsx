@@ -104,11 +104,16 @@ const MyCart = () => {
 
   return (
     <SectionContainer>
-      <h1 className="text-6xl font-bold mb-10">Your Cart</h1>
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-10">
+        Your Cart
+      </h1>
 
-      <div className="grid grid-cols-4 my-10">
+      <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-4 my-10 gap-4">
         {["Items", "Description", "Quantity", "Price"].map((header, index) => (
-          <div key={index} className="flex">
+          <div
+            key={index}
+            className="flex justify-center sm:justify-start items-start"
+          >
             <p className="border bg-[#DFEBF9] py-2 px-3 rounded-full my-2">
               {header}
             </p>
@@ -119,23 +124,26 @@ const MyCart = () => {
       <div>
         {cartItems && cartItems.length > 0 ? (
           cartItems.map((product) => (
-            <div key={product.product_id} className="grid grid-cols-4 my-10">
-              <div>
+            <div
+              key={product.product_id}
+              className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 my-10 gap-4"
+            >
+              <div className="flex justify-center sm:justify-start items-start">
                 <Image
-                  className="h-[10rem] w-auto rounded-[1rem]"
+                  className="w-full sm:w-[10rem] md:w-[12rem] lg:w-[16rem] h-auto rounded-[1rem]"
                   src={product.image_url}
                   alt={product.name}
-                  width={160}
-                  height={160}
+                  width={160} // Optional, since the width is controlled by Tailwind
+                  height={160} // Optional, since the height will be determined automatically
                 />
               </div>
 
-              <div>
-                <h1>{product.name}</h1>
-                <p>{product.description}</p>
+              <div className="flex flex-col justify-start sm:justify-start items-start">
+                <h1 className="text-lg font-bold">{product.name}</h1>
+                <p className="text-sm">{product.description}</p>
               </div>
 
-              <div>
+              <div className="flex justify-center sm:justify-start items-start">
                 <div className="flex items-center">
                   <button
                     onClick={() =>
@@ -165,9 +173,9 @@ const MyCart = () => {
                 </div>
               </div>
 
-              <div>
-                <div className="flex justify-between items-center">
-                  <p>Php {product.price}</p>
+              <div className="flex justify-center sm:justify-start items-start">
+                <div className="flex justify-between items-center w-full">
+                  <p className="font-semibold">Php {product.price}</p>
                   <button
                     onClick={() => handleDeleteItem(product.product_id)}
                     className="px-3 py-1 bg-red-700 text-white rounded-full"
